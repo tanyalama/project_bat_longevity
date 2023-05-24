@@ -1,0 +1,113 @@
+---
+title: "disease_ontology_disgenet2"
+author: "Tanya Lama"
+date: "2023-05-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(devtools)
+install_bitbucket("ibi_group/disgenet2r")
+library(disgenet2r)
+
+#this requires an API key and disgenet account
+disgenet_api_key <- get_disgenet_api_key(
+                  email = "tlama@smith.edu", 
+                  password = "JX4MN5d7@QctwHr" )
+#my key is 5d434d9b11fdb32b601415470bee5663ec1f48aa
+Sys.setenv(DISGENET_API_KEY= disgenet_api_key)
+
+# Retrieving Gene-Disease Associations from DisGeNET: Searching by gene
+## The entrez gene number seems to work best. 
+data1 <- gene2disease( gene = 84501, 
+                       vocabulary = "ENTREZ",
+                       database = "ALL")
+results <- extract(data1)
+
+# Visualizing disease associations
+plot( data1,
+      class = "Network",
+      prop = 20)
+plot( data1,
+      class = "DiseaseClass",
+      prop = 3)
+
+Creating the vector with a list of genes.
+myListOfGenes <- c("ANKRD61","APOC3", "ARHGEF10L", "CETN2", "CR1L", "CTSG", "CYP4B1", "ERN2")
+
+data2 <- gene2disease(
+  gene     = myListOfGenes,
+  score =c(0.2, 1),
+  verbose  = TRUE, 
+  database = "ALL"
+)
+
+results <- extract(data2)
+plot( data2,
+      class = "Network",
+      prop = 10)
+
+plot( data2,
+      class  ="Heatmap",
+      limit  = 100, nchars = 50 )
+
+plot( data2,
+      class="DiseaseClass", nchars=60)
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r dose}
+# Install DOSE
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+library(BiocManager)
+BiocManager::install("DOSE")
+browseVignettes("DOSE")
+
+genes<- c(7133,2689,59340,3303,1376,11132)
+gene<- c("122481")
+
+yy <- DOSE::enrichDO(genes, ont="DO", pvalueCutoff = 0.05)
+,
+  pAdjustMethod = "BH",
+  minGSSize = 10,
+  maxGSSize = 500,
+  qvalueCutoff = 0.2,
+  readable = FALSE
+)
+
+yy <- DOSE::enrichDO(
+gene,
+ont = "DO",
+pvalueCutoff = 0.05,
+pAdjustMethod = "BH",
+minGSSize = 10,
+maxGSSize = 500,
+qvalueCutoff = 0.2,
+readable = TRUE
+)
+
+BiocManager::install("org.Hs.eg.db")
+
+
+write.table(yy, file="/Volumes/GoogleDrive/My Drive/project_bat1k_longevity/scripts_longevity/gsea/dose.csv")
+
+/Users/tanyalama/Library/CloudStorage/GoogleDrive-tanya.lama@stonybrook.edu/My Drive/project_bat1k_longevity/scripts_longevity/gsea/disease_ontology_disgenet2.Rmd
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
