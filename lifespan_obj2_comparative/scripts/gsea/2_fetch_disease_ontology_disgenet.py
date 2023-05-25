@@ -45,7 +45,7 @@ def fetch_disease_associations(gene_symbol):
 def main():
     gene_symbols = []
 
-    with open('genes.txt', 'r') as file:
+    with open('geneSymbol.csv', 'r') as file:
         gene_symbols = [line.strip() for line in file]
 
     gene_disease_table = []

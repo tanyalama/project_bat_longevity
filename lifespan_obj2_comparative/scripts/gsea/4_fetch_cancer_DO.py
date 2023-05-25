@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+
+#4_fetch_cancer_DO.py uses the Disease Ontology API to search for gene-disease associations specific to a disease ontology ID (e.g., DOID:162 which is "cancer"). Outputs a table called doid_cancer.csv
+
 import csv
 import requests
 from pydantic import BaseModel
@@ -27,7 +31,7 @@ def get_cancer_disease_ontology_terms(gene_symbol):
 
 def main():
     genes = []
-    with open("ten.txt", "r") as file:
+    with open("geneSymbol.csv", "r") as file:
         for line in file:
             symbol = line.strip()
             gene = Gene(symbol)
@@ -40,7 +44,7 @@ def main():
         result = [gene.symbol, disease_names]
         results.append(result)
 
-    with open("gene_disease_associations.csv", "w", newline="") as file:
+    with open("doid_cancer.csv", "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["geneSymbol", "disease_name"])
         writer.writerows(results)

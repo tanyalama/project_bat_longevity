@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+
+#3_format_disease_ontology_disgenet.py reduces this repetitive data in gene_disease_associations.csv and parses a usable and simplified format.
+
 import csv
 import ast
 import sys

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+##1_fetch_gene_info.py retrieves gene descriptions and summaries using the Entrez API
+
 from Bio import Entrez
 import csv
 import xml.etree.ElementTree as ET
@@ -35,7 +37,7 @@ def fetch_gene_info(symbol):
 def main():
     gene_symbols = []
 
-    with open('genes.txt', 'r') as file:
+    with open('geneSymbol.csv', 'r') as file:
         gene_symbols = [line.strip() for line in file]
 
     gene_info_table = []
